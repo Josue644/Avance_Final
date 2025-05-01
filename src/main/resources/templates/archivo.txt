@@ -1,3 +1,4 @@
 NUEVO ARCHIVO. SE RENVIARA DE VISUAL STUDIO CODE A GITHUB. 
 1er Avance del Proyecto prueba de actualización para ver, mostrar y enviar cambio de GITHUB - Visual Studio Code o Visual Studio Code - GITHUB
-MENSAJE RECIENTE PARA LA PRUEBA 19:24 30/04/2025
+MENSAJE RECIENTE PARA LA PRUEBA 19:24 30/04/2025.
+Archivo nuevo para la ver los cambios
