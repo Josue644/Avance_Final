@@ -1,1 +1,2 @@
-NUEVO ARCHIVO. SE RENVIARA DE VISUAL STUDIO CODE A GITHUB
+NUEVO ARCHIVO. SE RENVIARA DE VISUAL STUDIO CODE A GITHUB. 
+1er Avance del Proyecto prueba de actualización para ver, mostrar y enviar cambio de GITHUB - Visual Studio Code o Visual Studio Code - GITHUB
