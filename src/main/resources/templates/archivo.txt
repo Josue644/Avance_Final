@@ -4,4 +4,5 @@ MENSAJE RECIENTE PARA LA PRUEBA 19:24 30/04/2025.
 Archivo nuevo para la ver los cambios
 ----------- PRUEBA EN EXPOSICIÓN ---------------
 Este mensaje debe aparecer en Visual Studio Code al colocar (Git pull origin Testing)
-----------CONFLICTOS DE FUSION VISUAL STUDIO CODE-------------
+----------CONFLICTOS DE FUSION GITHUB-------------
+
