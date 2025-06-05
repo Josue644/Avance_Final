@@ -1,0 +1,24 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ main, Testing ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v3
+
+    - name: Configurar Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Compilar con Maven
+      run: mvn -B package --file pom.xml
