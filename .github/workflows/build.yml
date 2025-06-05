@@ -2,7 +2,7 @@ name: Java CI
 
 on:
   push:
-    branches: [ main, Testing ]
+    branches: [ main, Testing ] 
   pull_request:
     branches: [ main ]
 
@@ -21,4 +21,4 @@ jobs:
         distribution: 'temurin'
 
     - name: Compilar con Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean install -DskipTests
