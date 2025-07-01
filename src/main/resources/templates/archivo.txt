@@ -5,4 +5,4 @@ Archivo nuevo para la ver los cambios
 ----------- PRUEBA EN EXPOSICIÓN ---------------
 Este mensaje debe aparecer en Visual Studio Code al colocar (Git pull origin Testing)
 ----------CONFLICTOS DE FUSION GITHUB-------------
-
+Ejemplo de prueba

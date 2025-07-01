@@ -2,23 +2,23 @@ name: Java CI
 
 on:
   push:
-    branches: [ main, Testing ] 
+    branches: [ main, Testing ]  # Ejecuta el flujo de trabajo al hacer push a las ramas `main` y `Testing`
   pull_request:
-    branches: [ main ]
+    branches: [ main ]  # También se ejecuta al hacer PR a la rama `main`
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Usa un entorno Ubuntu para ejecutar el trabajo
 
     steps:
     - name: Checkout del código
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Descarga el código del repositorio
 
     - name: Configurar Java
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v4  # Configura Java en el entorno
       with:
         java-version: '17'
-        distribution: 'temurin'
+        distribution: 'temurin'  # Distribución de OpenJDK
 
     - name: Compilar con Maven
-      run: mvn clean install -DskipTests
+      run: mvn clean install -DskipTests  # Compila el proyecto y omite las pruebas
