@@ -25,9 +25,8 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Desplegar a Vercel
-        uses: amondnet/vercel-action@v20  # Usamos la versión correcta de la acción de Vercel.
+        uses: amondnet/vercel-action@v20  # Usamos la acción de
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Token de acceso a Vercel.
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # ID del proyecto de Vercel.
-          github-token: ${{ secrets.GITHUB_TOKEN }}  # Token de GitHub automáticamente disponible.
-          vercel-args: '--prod'  # Despliegue en producción.
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Token de Vercel almacenado en secretos.
+          vercel-args: '--prod'  # Despliega en producción.
+          working-directory: '.'  # Directorio de trabajo, ajusta si es necesario.
