@@ -16,37 +16,22 @@
             <form action="/iniciar-sesion" method="post">
                 <br><br><br><br>
                 <h2>Iniciar sesión </h2>
-                <input type="email" name="email" placeholder="Email" required>
+                <input type="email" name="username" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">INGRESAR</button>
             </form>
         </div>
 
-        <!-- Formulario de Crear Cuenta -->
-        <div class="form-container sign-up-container">
-            <form action="/registrarse" method="post">
-                <br><br><br>
-                <h2>Crear una cuenta</h2>
-                <input type="text" name="name" placeholder="Nombre" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">REGISTRARSE</button>
-            </form>
-        </div>
-
         <div>
-            <p th:if="${success}" th:text="${success}" style="color: green;"></p>
-            <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+            <p th:if="${success}" th:text="${success}" style="font-size: 20px; color: green; margin-left: 36px; margin-top: 45px;" ></p>
+            <p th:if="${error}" th:text="${error}" style="font-size: 20px; color: red; margin-left: 36px; margin-top: 45px;"></p>
         </div>
 
         <!-- Panel de Bienvenida -->
         <div class="panel right-panel">
             <h2 id="panel-heading">¡Hola Administrador!</h2>
-            <center><p>Espero que estes muy bien por favor ingresa  su cuenta o registrese</p></center>
-            <button id="toggle-button" onclick="toggleForm()">CLIK AQUI</button>
-            <br><br><br><br>
-            <h2 id="panel-heading">Menu Principal</h2>
-            <a th:href="@{/}" style="background-color: #4fc3a1; color: white; text-decoration: none;">CLIK AQUI</a>
+            <center><p>Espero que estes muy bien por favor ingresa  su cuenta</p></center>
+            <a th:href="@{/}" style="background-color: #4fc3a1; color: white; text-decoration: none; padding: 10px 30px; border: 2px solid white; border-radius: 20px;">REGRESAR</a>
         </div>
     </div>
 

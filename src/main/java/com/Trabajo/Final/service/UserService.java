@@ -20,10 +20,6 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User findByEmailAndPassword(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password); // Método para autenticación
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
