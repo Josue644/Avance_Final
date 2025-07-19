@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Trabajo.Final.dto.MatriculaDTO;
 import com.Trabajo.Final.model.Docente;
@@ -24,38 +22,61 @@ public class DashboardController {
     @Autowired
     private DocenteService docenteService;
 
-    // Carga el dashboard con todas las matrículas y docentes
+    // Mostrar Dashboard
     @GetMapping("/dashboard")
     public String obtenerDashboard(Model model) {
-        // Obtener las matrículas desde el servicio
         List<MatriculaDTO> matriculas = datosMatriculaService.obtenerMatrículas(); 
         model.addAttribute("matriculas", matriculas);
 
-        // Obtener los docentes
         List<Docente> docentes = docenteService.getAllDocentes();   
         model.addAttribute("docentes", docentes);
 
-        return "dashboard";  // Plantilla HTML
+        return "dashboard";
     }
 
-    // Registrar un nuevo docente
+    // Registrar docente
     @PostMapping("/docentes")
     public String registrarDocente(@ModelAttribute Docente docente) {
         docenteService.saveDocente(docente);
         return "redirect:/dashboard";
     }
 
-    // Editar una matrícula
+    // Editar docente
+    @PostMapping("/docentes/editar")
+    public String editarDocente(@ModelAttribute Docente docente) {
+        docenteService.saveDocente(docente); // hace update si ya existe
+        return "redirect:/dashboard";
+    }
+
+    // Eliminar docente
+    @GetMapping("/docentes/eliminar/{id}")
+    public String eliminarDocente(@PathVariable Long id) {
+        docenteService.deleteDocenteById(id);
+        return "redirect:/dashboard";
+    }
+
+    // Editar matrícula
     @PostMapping("/dashboard/editar")
     public String editarMatricula(@ModelAttribute MatriculaDTO matriculaDto) {
         datosMatriculaService.actualizarMatricula(matriculaDto);
         return "redirect:/dashboard";
     }
 
-    // Eliminar una matrícula
+    // Eliminar matrícula
     @GetMapping("/dashboard/eliminar/{id}")
-    public String eliminarMatricula(@PathVariable Long id) {
-        datosMatriculaService.eliminarMatricula(id);
+    public String eliminarMatricula(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+        try {
+            datosMatriculaService.eliminarMatricula(id);
+        } catch (Exception e) {
+            System.err.println("Error al eliminar matrícula con ID(" + id + "): " + e.getMessage());
+            redirectAttributes.addFlashAttribute(
+                "deleteError",
+                "No se pudo eliminar la matrícula con ID " + id
+            );
+        }
         return "redirect:/dashboard";
     }
+    
 }

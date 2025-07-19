@@ -13,13 +13,15 @@ public class DocenteService {
     @Autowired
     private DocenteRepository docenteRepository;
 
-    // Obtener todos los docentes desde la base de datos
     public List<Docente> getAllDocentes() {
-        return docenteRepository.findAll();  // Devuelve todos los docentes desde la base de datos
+        return docenteRepository.findAll();
     }
 
-    // Guardar un docente en la base de datos
     public void saveDocente(Docente docente) {
-        docenteRepository.save(docente);  // Guarda el docente en la base de datos
+        docenteRepository.save(docente);
+    }
+
+    public void deleteDocenteById(Long id) {
+        docenteRepository.deleteById(id);
     }
 }

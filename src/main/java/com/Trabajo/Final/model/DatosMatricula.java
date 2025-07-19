@@ -1,11 +1,6 @@
 package com.Trabajo.Final.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "datos_matricula")
@@ -16,13 +11,14 @@ public class DatosMatricula {
     private Long id;
 
     private String sede;
-
     private String nivel;
-
     private String grado;
 
     @ManyToOne
     private Alumno alumno; // Relación con Alumno
+
+    @ManyToOne
+    private Apoderado apoderado; // ✅ Relación con Apoderado
 
     // Getters y Setters
     public Long getId() {
@@ -63,5 +59,13 @@ public class DatosMatricula {
 
     public void setAlumno(Alumno alumno) {
         this.alumno = alumno;
+    }
+
+    public Apoderado getApoderado() {
+        return apoderado;
+    }
+
+    public void setApoderado(Apoderado apoderado) {
+        this.apoderado = apoderado;
     }
 }

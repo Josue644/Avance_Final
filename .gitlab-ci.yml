@@ -1,0 +1,30 @@
+stages:
+  - build
+  - deploy
+
+# Etapa de construcción con Maven
+build:
+  stage: build
+  image: maven:3.5.3-jdk-21
+  script:
+    - echo "Compilando el proyecto Java con Maven..."
+    - mvn clean install -DskipTests
+  only:
+    - main
+    - Testing
+
+# Etapa de despliegue (puedes cambiar esta parte según cómo haces el deploy)
+deploy:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+  script:
+    - echo "Construyendo imagen Docker..."
+    - docker build -t josue/avance-final .
+    - echo "Pusheando la imagen (opcional)..."
+    # - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    # - docker push josue/avance-final
+  only:
+    - Testing
