@@ -112,10 +112,13 @@
                     <option value="aprobado">Aprobado</option>
                 </select>
             </div>
+            <div class="col-md-4">
+                <a class="btn btn-success" href="/exportar/excel">Exportar a Excel</a>
+            </div>
         </div>
 
-        <!-- Tabla Combinada Dashboard Matricula-->
-        <div class="table-container" id="#">
+        <!-- Tabla Combinada Dashboard Matricula -->
+        <div class="table-container" id="matricula">
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -130,9 +133,8 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="dataTable">
-                    <!-- Fila de ejemplo -->
-                    <tr th:each="matricula : ${matriculas}">
+                <tbody>
+                    <tr th:each="matricula : ${matriculas}" th:attr="data-id=${matricula.id}">
                         <td th:text="${matricula.nombreApoderado}"></td>
                         <td th:text="${matricula.numeroDocumentoApoderado}"></td>
                         <td th:text="${matricula.nombreAlumno}"></td>
@@ -142,9 +144,9 @@
                         <td th:text="${matricula.sede}"></td>
                         <td><span class="badge bg-warning">Pendiente</span></td>
                         <td>
-                            <button class="btn btn-success btn-edit" data-bs-toggle="modal"
-                                data-bs-target="#editModal">Editar</button>
-                            <button class="btn btn-danger btn-delete" onclick="confirmDelete()">Eliminar</button>
+                            <button class="btn btn-success btn-edit-matricula" data-bs-toggle="modal"
+                                data-bs-target="#editMatriculaModal">Editar</button>
+                            <a th:href="@{'/dashboard/eliminar/' + ${matricula.id}}" class="btn btn-danger">Eliminar</a>
                             <button class="btn btn-toggle btn-primary" onclick="toggleStatus(this)">Cambiar Estado</button>
                         </td>
                     </tr>
@@ -247,7 +249,7 @@
                     </tr>
                 </thead>
                 <tbody id="docentesTable">
-                    <tr th:each="docente : ${docentes}">
+                    <tr th:each="docente : ${docentes}" th:attr="data-id=${docente.id}">
                         <td th:text="${docente.nombre}"></td>
                         <td th:text="${docente.apellidoPaterno}"></td>
                         <td th:text="${docente.apellidoMaterno}"></td>
@@ -255,9 +257,12 @@
                         <td th:text="${docente.nivel}"></td>
                         <td th:text="${docente.sede}"></td>
                         <td>
-                            <button class="btn btn-success btn-edit" data-bs-toggle="modal"
-                                data-bs-target="#editModal">Editar</button>
-                            <button class="btn btn-danger btn-delete" onclick="confirmDelete()">Eliminar</button>
+                            <button class="btn btn-success btn-edit" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editDocenteModal">
+                                Editar
+                            </button>
+                            <a th:href="@{'/docentes/eliminar/' + ${docente.id}}" class="btn btn-danger">Eliminar</a>
                         </td>
                     </tr>
                 </tbody>
@@ -265,95 +270,129 @@
         </div>
         
         <!-- Modal para Registrar Docente -->
-<div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addDocenteModalLabel">Registrar Docente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/docentes" method="POST">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <div class="modal fade" id="addDocenteModal" tabindex="-1" aria-labelledby="addDocenteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="/docentes" method="POST" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addDocenteModalLabel">Registrar Docente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                        <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cursoEspecializado" class="form-label">Curso Especializado</label>
+                            <select class="form-select" id="cursoEspecializado" name="cursoEspecializado" required>
+                                <option value="Desarrollo Personal">Desarrollo Personal</option>
+                                <option value="Comunicación">Comunicación</option>
+                                <option value="Matemática">Matemática</option>
+                                <option value="Exploración del Entorno">Exploración del Entorno</option>
+                                <option value="Educación Artística">Educación Artística</option>
+                                <option value="Educación Física">Educación Física</option>
+                                <option value="Educación en Tecnología">Educación en Tecnología</option>
+                                <option value="Educación Religiosa">Educación Religiosa</option>
+                                <option value="Ciencias Sociales">Ciencias Sociales</option>
+                                <option value="Inglés">Inglés</option>
+                                <option value="Historia">Historia</option>
+                                <option value="Arte">Arte</option>
+                                <option value="Ciencias Naturales">Ciencias Naturales</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nivel" class="form-label">Nivel</label>
+                            <select class="form-select" id="nivel" name="nivel" required>
+                                <option value="Inicial">Inicial</option>
+                                <option value="Primaria">Primaria</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sede" class="form-label">Sede</label>
+                            <select class="form-select" id="sede" name="sede" required>
+                                <option value="Santa Anita">Santa Anita</option>
+                                <option value="Lurigancho-Chosica">Lurigancho-Chosica</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                        <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cursoEspecializado" class="form-label">Curso Especializado</label>
-                        <select class="form-select" id="cursoEspecializado" name="cursoEspecializado" required>
-                            <option value="Desarrollo Personal">Desarrollo Personal</option>
-                            <option value="Comunicación">Comunicación</option>
-                            <option value="Matemática">Matemática</option>
-                            <option value="Exploración del Entorno">Exploración del Entorno</option>
-                            <option value="Educación Artística">Educación Artística</option>
-                            <option value="Educación Física">Educación Física</option>
-                            <option value="Educación en Tecnología">Educación en Tecnología</option>
-                            <option value="Educación Religiosa">Educación Religiosa</option>
-                            <option value="Ciencias Sociales">Ciencias Sociales</option>
-                            <option value="Inglés">Inglés</option>
-                            <option value="Historia">Historia</option>
-                            <option value="Arte">Arte</option>
-                            <option value="Ciencias Naturales">Ciencias Naturales</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nivel" class="form-label">Nivel</label>
-                        <select class="form-select" id="nivel" name="nivel" required>
-                            <option value="Inicial">Inicial</option>
-                            <option value="Primaria">Primaria</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sede" class="form-label">Sede</label>
-                        <select class="form-select" id="sede" name="sede" required>
-                            <option value="Santa Anita">Santa Anita</option>
-                            <option value="Lurigancho-Chosica">Lurigancho-Chosica</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
                 </form>
             </div>
         </div>
-    </div>
-</div>
+        
+        <!-- Modal para Editar Docente -->
+        <div class="modal fade" id="editDocenteModal" tabindex="-1" aria-labelledby="editDocenteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="/docentes/editar" method="POST" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editDocenteModalLabel">Editar Docente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="id">
+                        <div class="mb-3">
+                            <label for="editNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="editNombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editApellidoPaterno" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="editApellidoPaterno" name="apellidoPaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editApellidoMaterno" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="editApellidoMaterno" name="apellidoMaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCursoEspecializado" class="form-label">Curso Especializado</label>
+                            <select class="form-select" id="editCursoEspecializado" name="cursoEspecializado" required>
+                                <option value="Desarrollo Personal">Desarrollo Personal</option>
+                                <option value="Comunicación">Comunicación</option>
+                                <option value="Matemática">Matemática</option>
+                                <option value="Exploración del Entorno">Exploración del Entorno</option>
+                                <option value="Educación Artística">Educación Artística</option>
+                                <option value="Educación Física">Educación Física</option>
+                                <option value="Educación en Tecnología">Educación en Tecnología</option>
+                                <option value="Educación Religiosa">Educación Religiosa</option>
+                                <option value="Ciencias Sociales">Ciencias Sociales</option>
+                                <option value="Inglés">Inglés</option>
+                                <option value="Historia">Historia</option>
+                                <option value="Arte">Arte</option>
+                                <option value="Ciencias Naturales">Ciencias Naturales</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editNivel" class="form-label">Nivel</label>
+                            <select class="form-select" id="editNivel" name="nivel" required>
+                                <option value="Inicial">Inicial</option>
+                                <option value="Primaria">Primaria</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSede" class="form-label">Sede</label>
+                            <select class="form-select" id="editSede" name="sede" required>
+                                <option value="Santa Anita">Santa Anita</option>
+                                <option value="Lurigancho-Chosica">Lurigancho-Chosica</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
 
         <!-- Pie de página -->
         <div class="footer">
             <p>&copy; 2025 Sistema de Matrículas. Todos los derechos reservados.</p>
-        </div>
-    </div>
-
-    <!-- Modales para Editar Matrícula -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Matrícula</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="editNombre" class="form-label">Nombre del Estudiante</label>
-                            <input type="text" class="form-control" id="editNombre" value="Ana Pérez">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editCorreo" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="editCorreo" value="ana.perez@example.com">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -409,6 +448,8 @@
             }
         }
     </script>
+    
+    <script src="../static/js/index.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,6 @@
 package com.Trabajo.Final.controller;
 
 import com.Trabajo.Final.model.Matricula;
-import com.Trabajo.Final.model.User;
-import com.Trabajo.Final.service.UserService;
 import com.Trabajo.Final.service.MatriculaService; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MainController {
-
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private MatriculaService matriculaService;
@@ -77,29 +71,6 @@ public class MainController {
     @GetMapping("/iniciar-sesion")
     public String iniciarSesion(Model model) {
         return "Iniciar Sesión"; // Carga Iniciar Sesión.html
-    }
-
-    @PostMapping("/registrarse")
-    public String register(@ModelAttribute User user, Model model) {
-    try {
-        userService.saveUser(user);
-        model.addAttribute("success", "Registro exitoso. Puedes iniciar sesión.");
-        return "Iniciar Sesión"; // Redirige a la misma vista para mostrar el mensaje
-    } catch (Exception e) {
-        model.addAttribute("error", "Error al registrar el usuario: " + e.getMessage());
-        return "Iniciar Sesión"; // Vuelve a mostrar el formulario con el error
-    }
-    }
-
-    @PostMapping("/iniciar-sesion")
-    public String login(@ModelAttribute User user, Model model) {
-        User authenticatedUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
-    if (authenticatedUser != null) {
-        return "redirect:/dashboard"; // Cambia a la ruta correspondiente despues de inciar sesión admi
-    } else {
-        model.addAttribute("error", "Credenciales inválidas");
-        return "Iniciar Sesión"; // Vuelve a mostrar el formulario con error
-    }
     }
 
     //SITIO DE MATRICULA DEL PADRE O APODERADO
